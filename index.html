@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> test page </title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Pretendard", "Apple SD Gothic Neo", Arial, sans-serif;
+      color: #172033;
+      background: linear-gradient(135deg, #eff6ff, #fdf2f8 45%, #ecfeff);
+      padding: 24px;
+
+    }
+
+    .shell {
+      width: min(1160px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 32px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(14px);
+      padding: 28px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      letter-spacing: -0.07em;
+      line-height: 1;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .nav-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .nav-title {
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .nav-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 18px;
+      padding: 13px 16px;
+      font-weight: 900;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.22);
+      transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    button.secondary {
+      background: #0f172a;
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.18);
+    }
+
+    button.ghost {
+      color: #0f172a;
+      background: #e2e8f0;
+      box-shadow: none;
+    }
+
+    button.active-tab {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      box-shadow: 0 12px 26px rgba(79, 70, 229, 0.28);
+    }
+
+    .game-section {
+      display: none;
+    }
+
+    .game-section.active {
+      display: block;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.11);
+      backdrop-filter: blur(12px);
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .main-panel,
+    .side-panel {
+      padding: 24px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 32px;
+      letter-spacing: -0.05em;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat-card {
+      min-width: 88px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .message {
+      min-height: 52px;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+
+    .rule-box {
+      padding: 14px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 12px;
+    }
+
+    .rule-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #0f172a;
+    }
+
+    .rule-box p {
+      margin: 0;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      justify-content: center;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+    }
+
+    /* =========================
+       Log Crush styles
+    ========================== */
+    .board-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .board {
+      position: relative;
+      overflow: visible;
+      display: grid;
+      grid-template-columns: repeat(7, 72px);
+      grid-template-rows: repeat(7, 72px);
+      gap: 10px;
+      padding: 14px;
+      border-radius: 26px;
+      background: #cbd5e1;
+      box-shadow: inset 0 4px 18px rgba(15, 23, 42, 0.15);
+      user-select: none;
+      touch-action: none;
+    }
+
+    .tile {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.18s ease;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.14);
+      position: relative;
+      overflow: hidden;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .tile:hover {
+      transform: translateY(-2px);
+    }
+
+    .tile.selected {
+      outline: 4px solid #facc15;
+      transform: scale(1.05);
+      z-index: 3;
+    }
+
+    .tile.matching {
+      animation: pop 0.35s ease forwards;
+    }
+
+    .tile.combo {
+      animation: comboPulse 0.45s ease;
+    }
+
+    .tile.popping {
+      animation: candyPop 0.32s ease-out forwards;
+      z-index: 5;
+      filter: brightness(1.12);
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      pointer-events: none;
+      image-rendering: pixelated;
+      border-radius: 1px;
+      z-index: 20;
+      animation: particleBurst 0.48s ease-out forwards;
+    }
+
+    .particle.big {
+      width: 8px;
+      height: 8px;
+      animation: particleBurstBig 0.58s ease-out forwards;
+    }
+
+    .board.shake {
+      animation: boardShake 0.24s ease-in-out;
+    }
+
+    .tile .log {
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.05;
+      color: #0f172a;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+    }
+
+    .tile .value {
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(15, 23, 42, 0.62);
+    }
+
+    .tile .badge {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      font-size: 10px;
+      font-weight: 900;
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 999px;
+      padding: 2px 5px;
+    }
+
+    .value-1 { background: linear-gradient(135deg, #dbeafe, #93c5fd); }
+    .value-2 { background: linear-gradient(135deg, #dcfce7, #86efac); }
+    .value-3 { background: linear-gradient(135deg, #fef9c3, #fde047); }
+    .value-4 { background: linear-gradient(135deg, #ffedd5, #fdba74); }
+    .value-5 { background: linear-gradient(135deg, #fae8ff, #d8b4fe); }
+    .value-6 { background: linear-gradient(135deg, #ffe4e6, #fda4af); }
+
+    @keyframes pop {
+      0% { transform: scale(1); opacity: 1; }
+      60% { transform: scale(1.18); opacity: 0.85; }
+      100% { transform: scale(0.25); opacity: 0; }
+    }
+
+    @keyframes candyPop {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1);
+      }
+      42% {
+        transform: scale(1.22);
+        opacity: 1;
+        filter: brightness(1.35);
+      }
+      100% {
+        transform: scale(0.16);
+        opacity: 0;
+        filter: brightness(1.7);
+      }
+    }
+
+    @keyframes particleBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(var(--dx) - 50%), calc(var(--dy) - 50%)) scale(0.25);
+        opacity: 0;
+      }
+    }
+
+    @keyframes particleBurstBig {
+      0% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(var(--dx) - 50%), calc(var(--dy) - 50%)) scale(0.15);
+        opacity: 0;
+      }
+    }
+
+    @keyframes boardShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes comboPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.18) rotate(2deg); }
+      100% { transform: scale(1); }
+    }
+
+    /* =========================
+       rad Timer styles
+    ========================== */
+    .timer-stage {
+      display: grid;
+      place-items: center;
+      min-height: 520px;
+      padding: 20px;
+      border-radius: 28px;
+      background: radial-gradient(circle at top, #ffffff 0%, #eef2ff 45%, #e0f2fe 100%);
+      border: 1px solid #dbeafe;
+      position: relative;
+      overflow: hidden;
+
+    }
+
+    .circle-game {
+      width: min(430px, 86vw);
+      aspect-ratio: 1;
+      position: relative;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.72);
+      border: 4px solid #dbeafe;
+      box-shadow: inset 0 0 28px rgba(37, 99, 235, 0.12), 0 24px 60px rgba(15, 23, 42, 0.12);
+    }
+
+    .circle-game::before,
+    .circle-game::after {
+      content: "";
+      position: absolute;
+      background: rgba(15, 23, 42, 0.13);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .circle-game::before {
+      width: 92%;
+      height: 2px;
+    }
+
+    .circle-game::after {
+      width: 2px;
+      height: 92%;
+    }
+
+    .angle-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 154px;
+      height: 154px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #e2e8f0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      z-index: 4;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+    }
+
+    .angle-label strong {
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      color: #111827;
+    }
+
+    .angle-label span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 800;
+    }
+
+    .ray {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 42%;
+      height: 6px;
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      border-radius: 999px;
+      transform-origin: left center;
+      transform: rotate(0rad);
+      z-index: 3;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+    }
+
+    .ray::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #ef4444;
+      border: 4px solid white;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+
+    }
+
+    .target-ray {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 42%;
+      height: 4px;
+      background: #22c55e;
+      border-radius: 999px;
+      transform-origin: left center;
+      transform: rotate(0rad);
+      z-index: 2;
+      opacity: 0.75;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.45);
+    }
+
+    .target-ray::after {
+      content: "목표";
+      position: absolute;
+      right: -34px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #166534;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .timer-score-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .big-result {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      font-weight: 900;
+      color: #0f172a;
+      min-height: 58px;
+      display: grid;
+      place-items: center;
+      line-height: 1.55;
+    }
+
+    .difficulty-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .difficulty-grid button {
+      padding: 10px 8px;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    .difficulty-grid button.selected-level {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .game-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .board {
+        grid-template-columns: repeat(7, 58px);
+        grid-template-rows: repeat(7, 58px);
+        gap: 8px;
+      }
+
+      .tile {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+      }
+
+      .tile .log {
+        font-size: 12px;
+      }
+
+      .tile .value {
+        font-size: 10px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 12px;
+      }
+
+      .hero,
+      .main-panel,
+      .side-panel {
+        padding: 16px;
+        border-radius: 22px;
+      }
+
+      .title-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats,
+      .timer-score-board {
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+
+      .board {
+        grid-template-columns: repeat(7, 43px);
+        grid-template-rows: repeat(7, 43px);
+        gap: 6px;
+        padding: 9px;
+      }
+
+      .tile {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+      }
+
+      .tile .log {
+        font-size: 9px;
+      }
+
+      .tile .value,
+      .tile .badge {
+        display: none !important;
+      }
+
+      .angle-label {
+        width: 124px;
+        height: 124px;
+      }
+
+      .angle-label strong {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <h1>제목 정하는중....</h1>
+        <p>
+          로그 성질을 이용한 <strong>Log Crush</strong>와 호도법 감각을 겨루는
+          <strong>호도법 맞추기 타이머</strong> 수학의 날 미니 게임 웹
+        </p>
+      </div>
+      <div class="nav-card">
+        <div class="nav-title">게임 선택</div>
+        <div class="nav-buttons">
+          <button id="logTab" class="active-tab"> Log Crush</button>
+          <button id="radTab" class="secondary">⏱ 호도법 맞추기 타이머</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="logSection" class="game-section active">
+      <div class="game-layout">
+        <section class="panel main-panel">
+          <div class="title-row">
+            <div>
+              <h2>Log Crush</h2>
+              <p class="subtitle">같은 값의 로그 3개를 맞추고, 역수 로그 콤보를 노려라!</p>
+            </div>
+            <div class="stats">
+              <div class="stat-card">
+                <span class="stat-label">점수</span>
+                <span id="score" class="stat-value">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">시간</span>
+                <span id="time" class="stat-value">60</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">콤보</span>
+                <span id="combo" class="stat-value">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="board-wrap">
+            <div id="board" class="board" aria-label="Log Crush game board"></div>
+          </div>
+
+          <div class="controls">
+            <button id="startBtn">게임 시작</button>
+            <button id="resetBtn" class="secondary">다시 섞기</button>
+            <button id="hintBtn" class="ghost">힌트</button>
+          </div>
+        </section>
+
+        <aside class="panel side-panel">
+          <h3>Log Crush 규칙</h3>
+
+          <div class="rule-box">
+            <strong>① 같은 값 3개 제거</strong>
+            <p>예: log₂4, log₃9, log₅25는 모두 값이 2이므로 한 줄로 만들면 제거됨.</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>② 역수 로그 콤보</strong>
+            <p>logₐb와 log_ba가 서로 이웃하면 특별 콤보가 발동. 예: log₂5 × log₅2 = 1</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>③ 같은 밑 보너스</strong>
+            <p>같은 밑의 로그 3개를 맞추면 추가 점수 획득!</p>
+          </div>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="showValue" checked />
+            로그값 힌트 보이기
+          </label>
+
+          <div id="message" class="message">
+            게임 시작을 누르고, 서로 이웃한 타일 두 개를 클릭해서 자리를 바꾸세요.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="radSection" class="game-section">
+      <div class="game-layout">
+        <section class="panel main-panel">
+          <div class="title-row">
+            <div>
+              <h2>rad 맞추기 타이머</h2>
+              <p class="subtitle">회전하는 빨간 반직선이 목표 각도에 가까워졌을 때 멈추세요.</p>
+            </div>
+            <div class="stats">
+              <div class="stat-card">
+                <span class="stat-label">점수</span>
+                <span id="radScore" class="stat-value">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">라운드</span>
+                <span id="radRound" class="stat-value">1</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">최고</span>
+                <span id="radBest" class="stat-value">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timer-stage">
+            <div class="circle-game">
+              <div id="targetRay" class="target-ray"></div>
+              <div id="movingRay" class="ray"></div>
+              <div class="angle-label">
+                <div>
+                  <strong id="targetText">π/2</strong>
+                  <span>목표 각도</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timer-score-board">
+            <div class="stat-card">
+              <span class="stat-label">현재 각도</span>
+              <span id="currentAngle" class="stat-value">0.00</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">오차</span>
+              <span id="angleError" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">이번 점수</span>
+              <span id="roundPoint" class="stat-value">-</span>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button id="radStartBtn">타이머 시작</button>
+            <button id="radStopBtn" class="secondary">멈추기</button>
+            <button id="radResetBtn" class="ghost">0도로 초기화</button>
+            <button id="radNextBtn" class="ghost">다음 목표</button>
+          </div>
+
+          <div id="radResult" class="big-result">
+            시작 버튼을 누른 뒤 목표 값에 가까운 순간 멈추세요.
+          </div>
+        </section>
+
+        <aside class="panel side-panel">
+          <h3>rad 타이머 규칙</h3>
+
+          <div class="rule-box">
+            <strong>① 호도법 각도</strong>
+            <p>π/6, π/4, π/3, π/2처럼 원 위에서의 각도를 rad 단위로 맞춰라!</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>② 가까울수록 고득점</strong>
+            <p>목표 각도와 멈춘 각도의 차이가 작을수록 높은 점수를 얻습니다.</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>③ 한 바퀴는 2π</strong>
+            <p>빨간 반직선은 수학의 단위원처럼 반시계방향으로 회전합니다. 목표 초록 선에 가장 가까운 순간을 노려보세요!</p>
+          </div>
+
+          <h3>난이도</h3>
+          <div class="difficulty-grid">
+            <button id="easyBtn" class="selected-level">쉬움</button>
+            <button id="normalBtn" class="secondary">보통</button>
+            <button id="hardBtn" class="secondary">어려움</button>
+            <button id="chaosBtn" class="secondary">챌린지</button>
+          </div>
+
+          <div id="radMessage" class="message">
+            쉬움: 목표선이 보입니다.
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* =========================
+       공통 탭 전환
+    ========================== */
+    const logTab = document.getElementById("logTab");
+    const radTab = document.getElementById("radTab");
+    const logSection = document.getElementById("logSection");
+    const radSection = document.getElementById("radSection");
+
+    logTab.addEventListener("click", () => switchSection("log"));
+    radTab.addEventListener("click", () => switchSection("rad"));
+
+    function switchSection(section) {
+      const isLog = section === "log";
+      logSection.classList.toggle("active", isLog);
+      radSection.classList.toggle("active", !isLog);
+      logTab.classList.toggle("active-tab", isLog);
+      radTab.classList.toggle("active-tab", !isLog);
+      logTab.classList.toggle("secondary", !isLog);
+      radTab.classList.toggle("secondary", isLog);
+    }
+
+    /* =========================
+       Log Crush
+    ========================== */
+    const SIZE = 7;
+    const GAME_TIME = 60;
+
+    const boardEl = document.getElementById("board");
+    const scoreEl = document.getElementById("score");
+    const timeEl = document.getElementById("time");
+    const comboEl = document.getElementById("combo");
+    const messageEl = document.getElementById("message");
+    const startBtn = document.getElementById("startBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const hintBtn = document.getElementById("hintBtn");
+    const showValueInput = document.getElementById("showValue");
+
+    let board = [];
+    let selected = null;
+    let score = 0;
+    let comboCount = 0;
+    let timeLeft = GAME_TIME;
+    let timerId = null;
+    let playing = false;
+    let isResolving = false;
+
+    const normalTiles = [
+      { base: 2, arg: 2, value: 1 },
+      { base: 3, arg: 3, value: 1 },
+      { base: 5, arg: 5, value: 1 },
+      { base: 2, arg: 4, value: 2 },
+      { base: 3, arg: 9, value: 2 },
+      { base: 5, arg: 25, value: 2 },
+      { base: 2, arg: 8, value: 3 },
+      { base: 3, arg: 27, value: 3 },
+      { base: 5, arg: 125, value: 3 },
+      { base: 2, arg: 16, value: 4 },
+      { base: 3, arg: 81, value: 4 },
+      { base: 2, arg: 32, value: 5 },
+      { base: 2, arg: 64, value: 6 }
+    ];
+
+    const reciprocalTiles = [
+      { base: 2, arg: 5, value: "R", pairKey: "2-5" },
+      { base: 5, arg: 2, value: "R", pairKey: "2-5" },
+      { base: 3, arg: 7, value: "R", pairKey: "3-7" },
+      { base: 7, arg: 3, value: "R", pairKey: "3-7" }
+    ];
+
+    function makeId() {
+      return crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
+    }
+
+    function cloneTile(tile) {
+      return {
+        id: makeId(),
+        base: tile.base,
+        arg: tile.arg,
+        value: tile.value,
+        pairKey: tile.pairKey || null,
+        special: tile.value === "R"
+      };
+    }
+
+    function randomTile() {
+      const useSpecial = Math.random() < 0.15;
+      const source = useSpecial ? reciprocalTiles : normalTiles;
+      return cloneTile(source[Math.floor(Math.random() * source.length)]);
+    }
+
+    function initBoard() {
+      board = Array.from({ length: SIZE }, () => Array.from({ length: SIZE }, () => null));
+
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          board[r][c] = randomTile();
+        }
+      }
+
+      let safety = 0;
+      while (findAllMatches().length > 0 && safety < 20) {
+        const matches = findAllMatches();
+        for (const pos of matches) {
+          board[pos.r][pos.c] = randomTile();
+        }
+        safety++;
+      }
+
+      selected = null;
+      renderBoard();
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const tile = board[r][c];
+          const tileEl = document.createElement("div");
+          tileEl.className = `tile ${getTileClass(tile)}`;
+          tileEl.dataset.r = r;
+          tileEl.dataset.c = c;
+
+          if (selected && selected.r === r && selected.c === c) {
+            tileEl.classList.add("selected");
+          }
+
+          const logEl = document.createElement("div");
+          logEl.className = "log";
+          logEl.innerHTML = `log<sub>${tile.base}</sub>${tile.arg}`;
+
+          const valueEl = document.createElement("div");
+          valueEl.className = "value";
+          valueEl.textContent = tile.special ? "역수 콤보" : `값 ${tile.value}`;
+          valueEl.style.display = showValueInput.checked ? "block" : "none";
+
+          tileEl.appendChild(logEl);
+          tileEl.appendChild(valueEl);
+
+          if (tile.special) {
+            const badge = document.createElement("div");
+            badge.className = "badge";
+            badge.textContent = "R";
+            tileEl.appendChild(badge);
+          }
+
+          tileEl.addEventListener("click", () => handleTileClick(r, c));
+          boardEl.appendChild(tileEl);
+        }
+      }
+
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+      comboEl.textContent = comboCount;
+    }
+
+    function getTileClass(tile) {
+      if (tile.special) return "value-6";
+      return `value-${Math.min(tile.value, 6)}`;
+    }
+
+    function handleTileClick(r, c) {
+      if (!playing || isResolving) return;
+
+      if (!selected) {
+        selected = { r, c };
+        renderBoard();
+        return;
+      }
+
+      if (selected.r === r && selected.c === c) {
+        selected = null;
+        renderBoard();
+        return;
+      }
+
+      if (!isAdjacent(selected, { r, c })) {
+        selected = { r, c };
+        renderBoard();
+        return;
+      }
+
+      const first = selected;
+      const second = { r, c };
+      selected = null;
+      swap(first, second);
+
+      const matches = findAllMatches();
+      const reciprocalCombos = findReciprocalCombos();
+
+      if (matches.length === 0 && reciprocalCombos.length === 0) {
+        swap(first, second);
+        setMessage("조건을 만족하는 조합이 없어요. 다른 타일을 바꿔보세요.");
+        renderBoard();
+        return;
+      }
+
+      resolveBoard();
+    }
+
+    function isAdjacent(a, b) {
+      return Math.abs(a.r - b.r) + Math.abs(a.c - b.c) === 1;
+    }
+
+    function swap(a, b) {
+      const temp = board[a.r][a.c];
+      board[a.r][a.c] = board[b.r][b.c];
+      board[b.r][b.c] = temp;
+    }
+
+    function findAllMatches() {
+      const positions = new Map();
+
+      for (let r = 0; r < SIZE; r++) {
+        let start = 0;
+        while (start < SIZE) {
+          let end = start + 1;
+          while (end < SIZE && canBasicMatch(board[r][start], board[r][end])) end++;
+          if (end - start >= 3) {
+            for (let c = start; c < end; c++) positions.set(`${r},${c}`, { r, c, reason: "sameValue" });
+          }
+          start = end;
+        }
+      }
+
+      for (let c = 0; c < SIZE; c++) {
+        let start = 0;
+        while (start < SIZE) {
+          let end = start + 1;
+          while (end < SIZE && canBasicMatch(board[start][c], board[end][c])) end++;
+          if (end - start >= 3) {
+            for (let r = start; r < end; r++) positions.set(`${r},${c}`, { r, c, reason: "sameValue" });
+          }
+          start = end;
+        }
+      }
+
+      for (let r = 0; r < SIZE; r++) {
+        let start = 0;
+        while (start < SIZE) {
+          let end = start + 1;
+          while (end < SIZE && canSameBaseMatch(board[r][start], board[r][end])) end++;
+          if (end - start >= 3) {
+            for (let c = start; c < end; c++) positions.set(`${r},${c}`, { r, c, reason: "sameBase" });
+          }
+          start = end;
+        }
+      }
+
+      for (let c = 0; c < SIZE; c++) {
+        let start = 0;
+        while (start < SIZE) {
+          let end = start + 1;
+          while (end < SIZE && canSameBaseMatch(board[start][c], board[end][c])) end++;
+          if (end - start >= 3) {
+            for (let r = start; r < end; r++) positions.set(`${r},${c}`, { r, c, reason: "sameBase" });
+          }
+          start = end;
+        }
+      }
+
+      return [...positions.values()];
+    }
+
+    function canBasicMatch(a, b) {
+      if (!a || !b) return false;
+      if (a.special || b.special) return false;
+      return a.value === b.value;
+    }
+
+    function canSameBaseMatch(a, b) {
+      if (!a || !b) return false;
+      if (a.special || b.special) return false;
+      return a.base === b.base;
+    }
+
+    function findReciprocalCombos() {
+      const combos = [];
+      const directions = [[0, 1], [1, 0]];
+
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const tile = board[r][c];
+          if (!tile || !tile.special) continue;
+
+          for (const [dr, dc] of directions) {
+            const nr = r + dr;
+            const nc = c + dc;
+            if (!inBounds(nr, nc)) continue;
+
+            const other = board[nr][nc];
+            if (!other || !other.special) continue;
+
+            const isPair = tile.pairKey === other.pairKey && tile.base === other.arg && tile.arg === other.base;
+            if (isPair) combos.push([{ r, c }, { r: nr, c: nc }]);
+          }
+        }
+      }
+
+      return combos;
+    }
+
+    function inBounds(r, c) {
+      return r >= 0 && r < SIZE && c >= 0 && c < SIZE;
+    }
+
+    async function resolveBoard() {
+      isResolving = true;
+      let chain = 0;
+
+      while (true) {
+        const matches = findAllMatches();
+        const reciprocalCombos = findReciprocalCombos();
+
+        if (matches.length === 0 && reciprocalCombos.length === 0) break;
+
+        chain++;
+        const removeMap = new Map();
+
+        for (const pos of matches) removeMap.set(`${pos.r},${pos.c}`, pos);
+
+        let reciprocalRemoved = 0;
+        for (const combo of reciprocalCombos) {
+          for (const pos of combo) removeMap.set(`${pos.r},${pos.c}`, { ...pos, reason: "reciprocal" });
+
+          for (const center of combo) {
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                const nr = center.r + dr;
+                const nc = center.c + dc;
+                if (inBounds(nr, nc)) removeMap.set(`${nr},${nc}`, { r: nr, c: nc, reason: "reciprocalArea" });
+              }
+            }
+          }
+          reciprocalRemoved += 2;
+        }
+
+        animateRemoving([...removeMap.values()]);
+        await wait(430);
+
+        const removedCount = removeMap.size;
+        const sameBaseBonus = matches.some(pos => pos.reason === "sameBase") ? 50 : 0;
+        const reciprocalBonus = reciprocalRemoved > 0 ? 120 : 0;
+        const chainBonus = chain > 1 ? chain * 20 : 0;
+
+        score += removedCount * 10 + sameBaseBonus + reciprocalBonus + chainBonus;
+        comboCount += reciprocalCombos.length;
+
+        for (const pos of removeMap.values()) board[pos.r][pos.c] = null;
+
+        collapseBoard();
+        fillBoard();
+        renderBoard();
+        await wait(220);
+
+        if (reciprocalCombos.length > 0) {
+          setMessage("역수 로그 콤보 발동! logₐb × log_ba = 1 성질을 이용했어요.");
+        } else if (sameBaseBonus > 0) {
+          setMessage("같은 밑 로그 보너스! logₐM + logₐN = logₐ(MN) 성질과 연결돼요.");
+        } else {
+          setMessage("같은 값을 가진 로그 타일이 제거되었습니다.");
+        }
+      }
+
+      isResolving = false;
+      renderBoard();
+    }
+
+    function animateRemoving(positions) {
+      let hasBigCombo = false;
+
+      for (const pos of positions) {
+        const el = boardEl.querySelector(`[data-r="${pos.r}"][data-c="${pos.c}"]`);
+        const tile = board[pos.r][pos.c];
+
+        if (!el || !tile) continue;
+
+        const isBig = pos.reason === "reciprocal" || pos.reason === "reciprocalArea";
+
+        el.classList.add("popping");
+        createBurstEffect(pos.r, pos.c, tile, isBig);
+
+        if (isBig) hasBigCombo = true;
+      }
+
+      if (hasBigCombo) {
+        boardEl.classList.add("shake");
+        setTimeout(() => boardEl.classList.remove("shake"), 240);
+      }
+    }
+
+    function getCandyParticleColor(tile) {
+      if (!tile) return "#ffffff";
+      if (tile.special) return "#c084fc";
+
+      const colorMap = {
+        1: "#60a5fa",
+        2: "#84cc16",
+        3: "#facc15",
+        4: "#fb923c",
+        5: "#f472b6",
+        6: "#a855f7"
+      };
+
+      return colorMap[tile.value] || "#ffffff";
+    }
+
+    function createBurstEffect(r, c, tile, isBig = false) {
+      const tileEl = boardEl.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+      if (!tileEl) return;
+
+      const boardRect = boardEl.getBoundingClientRect();
+      const tileRect = tileEl.getBoundingClientRect();
+
+      const centerX = tileRect.left - boardRect.left + tileRect.width / 2;
+      const centerY = tileRect.top - boardRect.top + tileRect.height / 2;
+      const particleCount = isBig ? 18 : 10;
+      const color = getCandyParticleColor(tile);
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement("div");
+        particle.className = isBig ? "particle big" : "particle";
+
+        const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.35;
+        const distance = isBig ? 28 + Math.random() * 28 : 16 + Math.random() * 20;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+
+        particle.style.left = `${centerX}px`;
+        particle.style.top = `${centerY}px`;
+        particle.style.background = color;
+        particle.style.boxShadow = "0 0 0 1px rgba(0,0,0,0.16)";
+        particle.style.setProperty("--dx", `${dx}px`);
+        particle.style.setProperty("--dy", `${dy}px`);
+
+        boardEl.appendChild(particle);
+        setTimeout(() => particle.remove(), isBig ? 600 : 500);
+      }
+    }
+
+    function collapseBoard() {
+      for (let c = 0; c < SIZE; c++) {
+        const column = [];
+        for (let r = SIZE - 1; r >= 0; r--) {
+          if (board[r][c]) column.push(board[r][c]);
+        }
+        for (let r = SIZE - 1; r >= 0; r--) {
+          board[r][c] = column[SIZE - 1 - r] || null;
+        }
+      }
+    }
+
+    function fillBoard() {
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          if (!board[r][c]) board[r][c] = randomTile();
+        }
+      }
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function startGame() {
+      score = 0;
+      comboCount = 0;
+      timeLeft = GAME_TIME;
+      playing = true;
+      isResolving = false;
+      selected = null;
+      initBoard();
+      setMessage("게임 시작! 이웃한 타일 두 개를 바꿔 조건을 만족하는 줄을 만드세요.");
+
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+    }
+
+    function endGame() {
+      playing = false;
+      clearInterval(timerId);
+      selected = null;
+      renderBoard();
+      setMessage(`게임 종료! 최종 점수는 ${score}점, 역수 로그 콤보는 ${comboCount}번입니다.`);
+    }
+
+    function resetBoard() {
+      if (!playing) {
+        initBoard();
+        setMessage("보드를 새로 섞었습니다. 게임 시작을 누르면 타이머가 작동합니다.");
+        return;
+      }
+      initBoard();
+      setMessage("보드를 다시 섞었습니다.");
+    }
+
+    function showHint() {
+      const hint = findPossibleMove();
+      if (!hint) {
+        setMessage("현재 가능한 이동을 찾기 어려워요. 다시 섞기를 눌러보세요.");
+        return;
+      }
+
+      const a = board[hint.a.r][hint.a.c];
+      const b = board[hint.b.r][hint.b.c];
+      setMessage(`힌트: (${hint.a.r + 1}행 ${hint.a.c + 1}열)의 log${sub(a.base)}${a.arg}와 (${hint.b.r + 1}행 ${hint.b.c + 1}열)의 log${sub(b.base)}${b.arg}를 바꿔보세요.`);
+    }
+
+    function findPossibleMove() {
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const candidates = [{ r, c: c + 1 }, { r: r + 1, c }];
+          for (const next of candidates) {
+            if (!inBounds(next.r, next.c)) continue;
+            swap({ r, c }, next);
+            const hasMove = findAllMatches().length > 0 || findReciprocalCombos().length > 0;
+            swap({ r, c }, next);
+            if (hasMove) return { a: { r, c }, b: next };
+          }
+        }
+      }
+      return null;
+    }
+
+    function sub(num) {
+      const map = { "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉" };
+      return String(num).split("").map(ch => map[ch] || ch).join("");
+    }
+
+    function setMessage(text) {
+      messageEl.textContent = text;
+    }
+
+    startBtn.addEventListener("click", startGame);
+    resetBtn.addEventListener("click", resetBoard);
+    hintBtn.addEventListener("click", showHint);
+    showValueInput.addEventListener("change", renderBoard);
+
+    initBoard();
+
+    /* =========================
+       rad 맞추기 타이머
+    ========================== */
+    const movingRay = document.getElementById("movingRay");
+    const targetRay = document.getElementById("targetRay");
+    const targetText = document.getElementById("targetText");
+    const currentAngleEl = document.getElementById("currentAngle");
+    const angleErrorEl = document.getElementById("angleError");
+    const roundPointEl = document.getElementById("roundPoint");
+    const radScoreEl = document.getElementById("radScore");
+    const radRoundEl = document.getElementById("radRound");
+    const radBestEl = document.getElementById("radBest");
+    const radStartBtn = document.getElementById("radStartBtn");
+    const radStopBtn = document.getElementById("radStopBtn");
+    const radNextBtn = document.getElementById("radNextBtn");
+    const radResetBtn = document.getElementById("radResetBtn");
+    const radResult = document.getElementById("radResult");
+    const radMessage = document.getElementById("radMessage");
+    const easyBtn = document.getElementById("easyBtn");
+    const normalBtn = document.getElementById("normalBtn");
+    const hardBtn = document.getElementById("hardBtn");
+    const chaosBtn = document.getElementById("chaosBtn");
+
+    const targets = [
+      { label: "π/6", value: Math.PI / 6 },
+      { label: "π/4", value: Math.PI / 4 },
+      { label: "π/3", value: Math.PI / 3 },
+      { label: "π/2", value: Math.PI / 2 },
+      { label: "2π/3", value: 2 * Math.PI / 3 },
+      { label: "3π/4", value: 3 * Math.PI / 4 },
+      { label: "5π/6", value: 5 * Math.PI / 6 },
+      { label: "π", value: Math.PI },
+      { label: "7π/6", value: 7 * Math.PI / 6 },
+      { label: "5π/4", value: 5 * Math.PI / 4 },
+      { label: "4π/3", value: 4 * Math.PI / 3 },
+      { label: "3π/2", value: 3 * Math.PI / 2 },
+      { label: "5π/3", value: 5 * Math.PI / 3 },
+      { label: "7π/4", value: 7 * Math.PI / 4 },
+      { label: "11π/6", value: 11 * Math.PI / 6 }
+    ];
+
+    const difficulties = {
+      easy: { speed: 0.018, showTarget: true, name: "쉬움" },
+      normal: { speed: 0.028, showTarget: true, name: "보통" },
+      hard: { speed: 0.04, showTarget: false, name: "어려움" },
+      chaos: { speed: 0.058, showTarget: false, name: "챌린지" }
+    };
+
+    let radDifficulty = "easy";
+    let radTarget = targets[3];
+    let radAngle = 0;
+    let radRunning = false;
+    let radAnimationId = null;
+    let radScore = 0;
+    let radRound = 1;
+    let radBest = 0;
+    let lastFrameTime = null;
+
+    function setNewRadTarget() {
+      radTarget = targets[Math.floor(Math.random() * targets.length)];
+      targetText.textContent = radTarget.label;
+      targetRay.style.transform = `rotate(${-radTarget.value}rad)`;
+      targetRay.style.display = difficulties[radDifficulty].showTarget ? "block" : "none";
+      angleErrorEl.textContent = "-";
+      roundPointEl.textContent = "-";
+      radResult.textContent = `이번 목표는 ${radTarget.label} 입니다.`;
+      renderRadInfo();
+    }
+
+    function startRadTimer() {
+      if (radRunning) return;
+      radRunning = true;
+      lastFrameTime = null;
+      radResult.textContent = "회전 중... 목표 각도에 가장 가까운 순간 멈추세요!";
+      radAnimationId = requestAnimationFrame(animateRad);
+    }
+
+    function animateRad(timestamp) {
+      if (!radRunning) return;
+
+      if (lastFrameTime === null) lastFrameTime = timestamp;
+      const delta = timestamp - lastFrameTime;
+      lastFrameTime = timestamp;
+
+      radAngle += difficulties[radDifficulty].speed * (delta / 16.67);
+      radAngle = normalizeAngle(radAngle);
+      movingRay.style.transform = `rotate(${-radAngle}rad)`;
+      currentAngleEl.textContent = radAngle.toFixed(2);
+
+      radAnimationId = requestAnimationFrame(animateRad);
+    }
+
+    function stopRadTimer() {
+      if (!radRunning) return;
+      radRunning = false;
+      cancelAnimationFrame(radAnimationId);
+
+      const error = circularDifference(radAngle, radTarget.value);
+      const point = calculateRadPoint(error);
+      radScore += point;
+      radBest = Math.max(radBest, point);
+
+      angleErrorEl.textContent = error.toFixed(3);
+      roundPointEl.textContent = point;
+      radScoreEl.textContent = radScore;
+      radBestEl.textContent = radBest;
+
+      let grade = "😐";
+      if (error < 0.03) grade = "🤩";
+      else if (error < 0.08) grade = "🤭";
+      else if (error < 0.18) grade = "😲";
+      else grade = "😢";
+
+      radResult.innerHTML = `${grade}<br>목표 ${radTarget.label}, 멈춘 각도 ${radAngle.toFixed(3)} rad, 오차 ${error.toFixed(3)} rad`;
+    }
+
+    function nextRadRound() {
+      radRunning = false;
+      cancelAnimationFrame(radAnimationId);
+      radRound++;
+      radRoundEl.textContent = radRound;
+
+      // 0도 초기화 ㅅㅂ
+      radAngle = 0;
+      movingRay.style.transform = `rotate(${-radAngle}rad)`;
+      currentAngleEl.textContent = radAngle.toFixed(2);
+      angleErrorEl.textContent = "-";
+      roundPointEl.textContent = "-";
+
+      setNewRadTarget();
+    }
+
+    function resetRadAngle() {
+      radRunning = false;
+      cancelAnimationFrame(radAnimationId);
+      radAngle = 0;
+      movingRay.style.transform = "rotate(0rad)";
+      currentAngleEl.textContent = "0.00";
+      angleErrorEl.textContent = "-";
+      roundPointEl.textContent = "-";
+      radResult.textContent = `0도로 초기화했습니다. 목표 ${radTarget.label}에 가까운 순간 멈추세요.`;
+    }
+
+    function normalizeAngle(angle) {
+      const full = Math.PI * 2;
+      return ((angle % full) + full) % full;
+    }
+
+    function circularDifference(a, b) {
+      const full = Math.PI * 2;
+      const diff = Math.abs(normalizeAngle(a) - normalizeAngle(b));
+      return Math.min(diff, full - diff);
+    }
+
+    function calculateRadPoint(error) {
+      const maxPoint = 100;
+      const penalty = Math.floor(error * 180);
+      return Math.max(0, maxPoint - penalty);
+    }
+
+    function renderRadInfo() {
+      radScoreEl.textContent = radScore;
+      radRoundEl.textContent = radRound;
+      radBestEl.textContent = radBest;
+      currentAngleEl.textContent = radAngle.toFixed(2);
+    }
+
+    function setDifficulty(level) {
+      radDifficulty = level;
+      const buttons = [easyBtn, normalBtn, hardBtn, chaosBtn];
+      buttons.forEach(btn => btn.classList.remove("selected-level"));
+      buttons.forEach(btn => btn.classList.add("secondary"));
+
+      const selectedButton = { easy: easyBtn, normal: normalBtn, hard: hardBtn, chaos: chaosBtn }[level];
+      selectedButton.classList.add("selected-level");
+      selectedButton.classList.remove("secondary");
+
+      targetRay.style.display = difficulties[radDifficulty].showTarget ? "block" : "none";
+      radMessage.textContent = `${difficulties[level].name} 모드: 회전 속도 ${difficulties[level].speed.toFixed(3)}, 목표선 ${difficulties[level].showTarget ? "표시" : "숨김"}`;
+    }
+
+    radStartBtn.addEventListener("click", startRadTimer);
+    radStopBtn.addEventListener("click", stopRadTimer);
+    radResetBtn.addEventListener("click", resetRadAngle);
+    radNextBtn.addEventListener("click", nextRadRound);
+    easyBtn.addEventListener("click", () => setDifficulty("easy"));
+    normalBtn.addEventListener("click", () => setDifficulty("normal"));
+    hardBtn.addEventListener("click", () => setDifficulty("hard"));
+    chaosBtn.addEventListener("click", () => setDifficulty("chaos"));
+
+    setDifficulty("easy");
+    setNewRadTarget();
+    renderRadInfo();
+  </script>
+</body>
+</html>
