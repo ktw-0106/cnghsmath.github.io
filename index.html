@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> test page </title>
+  <title>수학오락실</title>
   <style>
     * {
       box-sizing: border-box;
@@ -602,10 +602,171 @@
       background: linear-gradient(135deg, #16a34a, #22c55e);
     }
 
+
+
+    /* =========================
+       Coordinate Symmetry Maze styles
+    ========================== */
+    .coord-stage {
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      border-radius: 28px;
+      background: radial-gradient(circle at top, #ffffff 0%, #f0fdf4 46%, #ecfeff 100%);
+      border: 1px solid #bbf7d0;
+      min-height: 560px;
+      overflow: auto;
+    }
+
+    .coord-board {
+      --cell: 42px;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(11, var(--cell));
+      grid-template-rows: repeat(11, var(--cell));
+      background: #f8fafc;
+      border: 3px solid #0f172a;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 22px 52px rgba(15, 23, 42, 0.14);
+      user-select: none;
+    }
+
+    .coord-cell {
+      position: relative;
+      width: var(--cell);
+      height: var(--cell);
+      border-right: 1px solid #cbd5e1;
+      border-bottom: 1px solid #cbd5e1;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .coord-cell:hover {
+      background: #e0f2fe;
+    }
+
+    .coord-cell.axis-x,
+    .coord-cell.axis-y {
+      background: #eef2ff;
+    }
+
+    .coord-cell.origin {
+      background: #ddd6fe;
+    }
+
+    .coord-cell.path {
+      background: #fee2e2;
+    }
+
+    .coord-cell.hit-path {
+      background: #fecaca;
+      box-shadow: inset 0 0 0 3px #ef4444;
+    }
+
+    .coord-cell.success-path {
+      background: #bbf7d0;
+      box-shadow: inset 0 0 0 3px #22c55e;
+    }
+
+    .coord-cell.blocked-path {
+      background: #e2e8f0;
+      box-shadow: inset 0 0 0 3px #475569;
+    }
+
+    .coord-label {
+      position: absolute;
+      left: 3px;
+      bottom: 2px;
+      font-size: 9px;
+      font-weight: 800;
+      color: rgba(71, 85, 105, 0.75);
+      pointer-events: none;
+    }
+
+    .coord-token {
+      width: 30px;
+      height: 30px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      font-size: 16px;
+      color: #0f172a;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.16);
+      z-index: 3;
+    }
+
+    .coord-token.start { background: linear-gradient(135deg, #fef08a, #f59e0b); }
+    .coord-token.goal { background: linear-gradient(135deg, #bbf7d0, #22c55e); }
+    .coord-token.wall { background: linear-gradient(135deg, #cbd5e1, #334155); color: white; }
+    .coord-token.mirror { background: linear-gradient(135deg, #dbeafe, #60a5fa); }
+    .coord-token.sym-x { background: linear-gradient(135deg, #cffafe, #06b6d4); }
+    .coord-token.sym-y { background: linear-gradient(135deg, #fce7f3, #ec4899); }
+    .coord-token.sym-o { background: linear-gradient(135deg, #ede9fe, #8b5cf6); color: white; }
+    .coord-token.sym-v { background: linear-gradient(135deg, #dcfce7, #16a34a); color: white; }
+    .coord-token.sym-h { background: linear-gradient(135deg, #fed7aa, #f97316); color: white; }
+
+    .coord-tools {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .coord-tools button {
+      padding: 10px 8px;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    .coord-tools button.selected-tool {
+      background: linear-gradient(135deg, #14b8a6, #2563eb);
+      box-shadow: 0 12px 22px rgba(20, 184, 166, 0.26);
+    }
+
+    .laser-note {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .formula-mini {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 10px;
+      color: #334155;
+      line-height: 1.65;
+      margin-top: 10px;
+    }
+
     @media (max-width: 980px) {
       .hero,
       .game-layout {
         grid-template-columns: 1fr;
+      }
+
+      .coord-board {
+        --cell: 36px;
+      }
+
+      .coord-token {
+        width: 27px;
+        height: 27px;
+        font-size: 14px;
       }
 
       .board {
@@ -650,6 +811,25 @@
       .timer-score-board {
         grid-template-columns: 1fr;
         width: 100%;
+      }
+
+      .coord-board {
+        --cell: 28px;
+      }
+
+      .coord-cell {
+        font-size: 9px;
+      }
+
+      .coord-label {
+        display: none;
+      }
+
+      .coord-token {
+        width: 22px;
+        height: 22px;
+        border-radius: 8px;
+        font-size: 11px;
       }
 
       .board {
@@ -699,6 +879,7 @@
         <div class="nav-buttons">
           <button id="logTab" class="active-tab"> Log Crush</button>
           <button id="radTab" class="secondary">⏱ 호도법 맞추기 타이머</button>
+          <button id="coordTab" class="secondary">📍 좌표 대칭 미로</button>
         </div>
       </div>
     </section>
@@ -866,26 +1047,126 @@
     </section>
   </main>
 
+
+
+    <section id="coordSection" class="game-section">
+      <div class="game-layout">
+        <section class="panel main-panel">
+          <div class="title-row">
+            <div>
+              <h2>좌표 대칭 미로</h2>
+              <p class="subtitle">레이저가 변환 오브젝트를 만날 때 좌표와 방향이 함께 대칭됩니다.</p>
+            </div>
+            <div class="stats">
+              <div class="stat-card">
+                <span class="stat-label">스테이지</span>
+                <span id="coordStage" class="stat-value">1</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">이동 수</span>
+                <span id="coordSteps" class="stat-value">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">상태</span>
+                <span id="coordStatus" class="stat-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="coord-stage">
+            <div id="coordBoard" class="coord-board" aria-label="좌표 대칭 미로 게임판"></div>
+          </div>
+
+          <div class="controls">
+            <button id="coordRunBtn">레이저 발사</button>
+            <button id="coordClearBtn" class="secondary">배치 지우기</button>
+            <button id="coordNextBtn" class="ghost">다음 스테이지</button>
+          </div>
+
+          <div id="coordResult" class="big-result">
+            오브젝트를 선택한 뒤 좌표평면에 배치하고 레이저를 발사하세요.
+          </div>
+        </section>
+
+        <aside class="panel side-panel">
+          <h3>좌표 대칭 미로 규칙</h3>
+
+          <div class="rule-box">
+            <strong>① 좌표와 방향이 함께 변환</strong>
+            <p>예: x축 대칭은 (x, y) → (x, -y), 방향 (dx, dy) → (dx, -dy)로 바뀝니다.</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>② 목표</strong>
+            <p>시작점 S에서 출발한 레이저가 초록색 목표점 G에 도달하면 성공입니다.</p>
+          </div>
+
+          <div class="rule-box">
+            <strong>③ 벽</strong>
+            <p>회색 벽 ■에 닿거나 좌표평면 밖으로 나가면 실패합니다.</p>
+          </div>
+
+          <h3>배치 도구</h3>
+          <div class="coord-tools">
+            <button data-tool="slash" class="selected-tool">/ 거울</button>
+            <button data-tool="backslash" class="secondary">\ 거울</button>
+            <button data-tool="xAxis" class="secondary">X x축 대칭</button>
+            <button data-tool="yAxis" class="secondary">Y y축 대칭</button>
+            <button data-tool="origin" class="secondary">O 원점 대칭</button>
+            <button data-tool="vLine" class="secondary">V x=2 대칭</button>
+            <button data-tool="hLine" class="secondary">H y=-2 대칭</button>
+            <button data-tool="erase" class="ghost">지우개</button>
+          </div>
+
+          <div id="coordMessage" class="message">
+            현재 도구: / 거울. 격자의 빈 칸을 클릭하면 배치됩니다.
+          </div>
+
+          <div class="formula-mini">
+            X: (x,y)→(x,-y), (dx,dy)→(dx,-dy)<br>
+            Y: (x,y)→(-x,y), (dx,dy)→(-dx,dy)<br>
+            O: (x,y)→(-x,-y), (dx,dy)→(-dx,-dy)<br>
+            V: x=2 대칭, H: y=-2 대칭
+          </div>
+
+          <div class="laser-note">
+            포인트: 일반 거울은 방향을 꺾고, 대칭 오브젝트는 레이저의 위치와 방향 벡터를 동시에 바꿉니다.
+          </div>
+        </aside>
+      </div>
+    </section>
+
   <script>
     /* =========================
        공통 탭 전환
     ========================== */
     const logTab = document.getElementById("logTab");
     const radTab = document.getElementById("radTab");
+    const coordTab = document.getElementById("coordTab");
     const logSection = document.getElementById("logSection");
     const radSection = document.getElementById("radSection");
+    const coordSection = document.getElementById("coordSection");
 
     logTab.addEventListener("click", () => switchSection("log"));
     radTab.addEventListener("click", () => switchSection("rad"));
+    coordTab.addEventListener("click", () => switchSection("coord"));
 
     function switchSection(section) {
       const isLog = section === "log";
+      const isRad = section === "rad";
+      const isCoord = section === "coord";
+
       logSection.classList.toggle("active", isLog);
-      radSection.classList.toggle("active", !isLog);
+      radSection.classList.toggle("active", isRad);
+      coordSection.classList.toggle("active", isCoord);
+
       logTab.classList.toggle("active-tab", isLog);
-      radTab.classList.toggle("active-tab", !isLog);
+      radTab.classList.toggle("active-tab", isRad);
+      coordTab.classList.toggle("active-tab", isCoord);
+
       logTab.classList.toggle("secondary", !isLog);
-      radTab.classList.toggle("secondary", isLog);
+      radTab.classList.toggle("secondary", !isRad);
+      coordTab.classList.toggle("secondary", !isCoord);
     }
 
     /* =========================
@@ -1533,7 +1814,7 @@
       radRound++;
       radRoundEl.textContent = radRound;
 
-      // 0도 초기화 ㅅㅂ
+      // 다음 라운드 시작 전 각도를 0도로 초기화
       radAngle = 0;
       movingRay.style.transform = `rotate(${-radAngle}rad)`;
       currentAngleEl.textContent = radAngle.toFixed(2);
@@ -1604,6 +1885,400 @@
     setDifficulty("easy");
     setNewRadTarget();
     renderRadInfo();
+
+
+    /* =========================
+       좌표 대칭 미로
+    ========================== */
+    const coordBoardEl = document.getElementById("coordBoard");
+    const coordStageEl = document.getElementById("coordStage");
+    const coordStepsEl = document.getElementById("coordSteps");
+    const coordStatusEl = document.getElementById("coordStatus");
+    const coordRunBtn = document.getElementById("coordRunBtn");
+    const coordClearBtn = document.getElementById("coordClearBtn");
+    const coordNextBtn = document.getElementById("coordNextBtn");
+    const coordResult = document.getElementById("coordResult");
+    const coordMessage = document.getElementById("coordMessage");
+    const coordToolButtons = document.querySelectorAll(".coord-tools button");
+
+    const COORD_MIN = -5;
+    const COORD_MAX = 5;
+    const COORD_SIZE = COORD_MAX - COORD_MIN + 1;
+
+    const coordStages = [
+      {
+        start: { x: -5, y: 2, dx: 1, dy: 0 },
+        goal: { x: 4, y: -2 },
+        walls: [{ x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 }],
+        fixed: [{ x: -2, y: 2, type: "xAxis" }],
+        hint: "x축 대칭 X를 지나면 y좌표와 세로 방향 성분이 반대로 바뀝니다."
+      },
+      {
+        start: { x: 5, y: 1, dx: -1, dy: 0 },
+        goal: { x: 4, y: 1 },
+        walls: [{ x: 0, y: 1 }, { x: 1, y: 1 }],
+        fixed: [{ x: 2, y: 1, type: "yAxis" }],
+        hint: "y축 대칭 Y는 x좌표와 가로 방향 성분을 반대로 바꿉니다."
+      },
+      {
+        start: { x: -4, y: -4, dx: 1, dy: 0 },
+        goal: { x: 4, y: 4 },
+        walls: [{ x: 0, y: -4 }, { x: 1, y: -4 }, { x: 2, y: -4 }],
+        fixed: [{ x: -1, y: -4, type: "slash" }, { x: -1, y: 1, type: "origin" }],
+        hint: "원점 대칭 O는 좌표와 방향을 모두 반대로 바꿉니다."
+      },
+      {
+        start: { x: -5, y: 0, dx: 1, dy: 0 },
+        goal: { x: -4, y: 3 },
+        walls: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 3, y: 3 }],
+        fixed: [{ x: -2, y: 0, type: "vLine" }, { x: 2, y: 0, type: "backslash" }],
+        hint: "V는 직선 x=2에 대한 대칭입니다. 위치 x와 방향 dx가 함께 바뀝니다."
+      },
+      {
+        start: { x: -5, y: -5, dx: 1, dy: 0 },
+        goal: { x: 4, y: 1 },
+        walls: [{ x: 0, y: -5 }, { x: 1, y: -5 }, { x: 2, y: -5 }],
+        fixed: [{ x: -2, y: -5, type: "hLine" }],
+        hint: "H는 직선 y=-2에 대한 대칭입니다. y=-5는 y=1로 이동합니다."
+      },
+      {
+        start: { x: -5, y: 3, dx: 1, dy: 0 },
+        goal: { x: -3, y: 2 },
+        walls: [{ x: -1, y: 3 }, { x: 0, y: 3 }, { x: -3, y: -2 }],
+        fixed: [{ x: -3, y: 3, type: "slash" }, { x: -3, y: 1, type: "xAxis" }],
+        hint: "거울로 아래쪽 방향을 만든 뒤 X를 만나면 위쪽 방향으로 바뀝니다."
+      },
+      {
+        start: { x: -5, y: -3, dx: 1, dy: 0 },
+        goal: { x: 0, y: -5 },
+        walls: [{ x: -1, y: -3 }, { x: 1, y: -3 }, { x: 4, y: -3 }],
+        fixed: [{ x: -2, y: -3, type: "yAxis" }, { x: 0, y: -3, type: "backslash" }],
+        hint: "Y로 가로 방향을 뒤집은 뒤 \\ 거울을 만나면 아래쪽으로 진행합니다."
+      },
+      {
+        start: { x: -5, y: 0, dx: 1, dy: 0 },
+        goal: { x: 3, y: 4 },
+        walls: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 5, y: 0 }],
+        fixed: [{ x: -1, y: 0, type: "vLine" }, { x: 3, y: 0, type: "slash" }],
+        hint: "V를 만나면 x=2를 기준으로 반대편으로 이동하고 방향도 왼쪽으로 바뀝니다."
+      },
+      {
+        start: { x: -5, y: -5, dx: 1, dy: 0 },
+        goal: { x: -5, y: 1 },
+        walls: [{ x: -1, y: -5 }, { x: 0, y: -5 }, { x: 2, y: 1 }],
+        fixed: [{ x: -3, y: -5, type: "hLine" }, { x: 1, y: 1, type: "yAxis" }],
+        hint: "H로 y좌표를 올린 뒤 Y를 만나면 왼쪽으로 되돌아가 목표에 도달할 수 있습니다."
+      },
+      {
+        start: { x: -5, y: 2, dx: 1, dy: 0 },
+        goal: { x: 1, y: 5 },
+        walls: [{ x: -1, y: 2 }, { x: 0, y: 2 }, { x: 2, y: 0 }, { x: 3, y: 3 }],
+        fixed: [{ x: -3, y: 2, type: "slash" }, { x: -3, y: 0, type: "origin" }, { x: 3, y: 2, type: "vLine" }],
+        hint: "마지막 스테이지는 / 거울 → 원점 대칭 → x=2 대칭 순서를 따라가며 좌표와 방향을 함께 추적해야 합니다."
+      }
+    ];
+
+    const toolNames = {
+      slash: "/ 거울",
+      backslash: "\\ 거울",
+      xAxis: "X x축 대칭",
+      yAxis: "Y y축 대칭",
+      origin: "O 원점 대칭",
+      vLine: "V x=2 대칭",
+      hLine: "H y=-2 대칭",
+      erase: "지우개"
+    };
+
+    let coordStageIndex = 0;
+    let coordTool = "slash";
+    let coordPlaced = new Map();
+    let coordPath = [];
+    let coordHitStatus = "ready";
+
+    function coordKey(x, y) {
+      return `${x},${y}`;
+    }
+
+    function coordToRow(y) {
+      return COORD_MAX - y;
+    }
+
+    function coordToCol(x) {
+      return x - COORD_MIN;
+    }
+
+    function getCurrentStage() {
+      return coordStages[coordStageIndex];
+    }
+
+    function getFixedObject(x, y) {
+      return getCurrentStage().fixed.find(obj => obj.x === x && obj.y === y) || null;
+    }
+
+    function getWall(x, y) {
+      return getCurrentStage().walls.some(wall => wall.x === x && wall.y === y);
+    }
+
+    function getObjectAt(x, y) {
+      const fixed = getFixedObject(x, y);
+      if (fixed) return fixed.type;
+      return coordPlaced.get(coordKey(x, y)) || null;
+    }
+
+    function renderCoordBoard() {
+      coordBoardEl.innerHTML = "";
+      const stage = getCurrentStage();
+      const pathMap = new Map(coordPath.map((p, index) => [coordKey(p.x, p.y), index]));
+
+      for (let row = 0; row < COORD_SIZE; row++) {
+        for (let col = 0; col < COORD_SIZE; col++) {
+          const x = COORD_MIN + col;
+          const y = COORD_MAX - row;
+          const cell = document.createElement("div");
+          cell.className = "coord-cell";
+          cell.dataset.x = x;
+          cell.dataset.y = y;
+
+          if (x === 0) cell.classList.add("axis-y");
+          if (y === 0) cell.classList.add("axis-x");
+          if (x === 0 && y === 0) cell.classList.add("origin");
+
+          const pathIndex = pathMap.get(coordKey(x, y));
+          if (pathIndex !== undefined) {
+            cell.classList.add("path");
+            if (coordHitStatus === "success" && pathIndex === coordPath.length - 1) cell.classList.add("success-path");
+            if (coordHitStatus === "blocked" && pathIndex === coordPath.length - 1) cell.classList.add("blocked-path");
+            if (coordHitStatus === "hit" && pathIndex === coordPath.length - 1) cell.classList.add("hit-path");
+          }
+
+          const label = document.createElement("div");
+          label.className = "coord-label";
+          label.textContent = `(${x},${y})`;
+          cell.appendChild(label);
+
+          const token = makeCoordToken(x, y, stage);
+          if (token) cell.appendChild(token);
+
+          cell.addEventListener("click", () => handleCoordCellClick(x, y));
+          coordBoardEl.appendChild(cell);
+        }
+      }
+
+      coordStageEl.textContent = coordStageIndex + 1;
+      coordStepsEl.textContent = coordPath.length;
+      coordStatusEl.textContent = coordHitStatus === "success" ? "성공" : coordHitStatus === "blocked" ? "실패" : coordHitStatus === "hit" ? "진행" : "-";
+    }
+
+    function makeCoordToken(x, y, stage) {
+      if (stage.start.x === x && stage.start.y === y) return createToken("S", "start");
+      if (stage.goal.x === x && stage.goal.y === y) return createToken("G", "goal");
+      if (getWall(x, y)) return createToken("■", "wall");
+
+      const objectType = getObjectAt(x, y);
+      if (!objectType) return null;
+
+      const symbolMap = {
+        slash: "/",
+        backslash: "\\",
+        xAxis: "X",
+        yAxis: "Y",
+        origin: "O",
+        vLine: "V",
+        hLine: "H"
+      };
+      const classMap = {
+        slash: "mirror",
+        backslash: "mirror",
+        xAxis: "sym-x",
+        yAxis: "sym-y",
+        origin: "sym-o",
+        vLine: "sym-v",
+        hLine: "sym-h"
+      };
+      return createToken(symbolMap[objectType], classMap[objectType]);
+    }
+
+    function createToken(text, cls) {
+      const token = document.createElement("div");
+      token.className = `coord-token ${cls}`;
+      token.textContent = text;
+      return token;
+    }
+
+    function handleCoordCellClick(x, y) {
+      const stage = getCurrentStage();
+      const key = coordKey(x, y);
+
+      if ((stage.start.x === x && stage.start.y === y) || (stage.goal.x === x && stage.goal.y === y) || getWall(x, y) || getFixedObject(x, y)) {
+        coordMessage.textContent = "시작점, 목표점, 벽, 고정 오브젝트에는 배치할 수 없어요.";
+        return;
+      }
+
+      coordPath = [];
+      coordHitStatus = "ready";
+
+      if (coordTool === "erase") {
+        coordPlaced.delete(key);
+        coordMessage.textContent = `(${x}, ${y})의 오브젝트를 지웠습니다.`;
+      } else {
+        coordPlaced.set(key, coordTool);
+        coordMessage.textContent = `(${x}, ${y})에 ${toolNames[coordTool]}를 배치했습니다.`;
+      }
+
+      renderCoordBoard();
+    }
+
+    function setCoordTool(tool) {
+      coordTool = tool;
+      coordToolButtons.forEach(btn => {
+        btn.classList.remove("selected-tool");
+        btn.classList.add("secondary");
+      });
+      const selected = [...coordToolButtons].find(btn => btn.dataset.tool === tool);
+      if (selected) {
+        selected.classList.add("selected-tool");
+        selected.classList.remove("secondary");
+      }
+      coordMessage.textContent = `현재 도구: ${toolNames[tool]}. 격자의 빈 칸을 클릭하세요.`;
+    }
+
+    function runCoordLaser() {
+      const stage = getCurrentStage();
+      let state = { ...stage.start };
+      coordPath = [];
+      coordHitStatus = "hit";
+      const visited = new Set();
+      const logs = [];
+      const maxSteps = 80;
+
+      for (let step = 0; step < maxSteps; step++) {
+        state.x += state.dx;
+        state.y += state.dy;
+
+        if (!inCoordBounds(state.x, state.y)) {
+          coordHitStatus = "blocked";
+          logs.push(`좌표평면 밖으로 나갔습니다.`);
+          break;
+        }
+
+        coordPath.push({ x: state.x, y: state.y });
+
+        if (stage.goal.x === state.x && stage.goal.y === state.y) {
+          coordHitStatus = "success";
+          logs.push(`목표점 (${state.x}, ${state.y})에 도달했습니다!`);
+          break;
+        }
+
+        if (getWall(state.x, state.y)) {
+          coordHitStatus = "blocked";
+          logs.push(`벽 (${state.x}, ${state.y})에 막혔습니다.`);
+          break;
+        }
+
+        const objectType = getObjectAt(state.x, state.y);
+        if (objectType) {
+          const before = { ...state };
+          state = transformLaserState(state, objectType);
+          logs.push(`${toolNames[objectType]}: (${before.x},${before.y}), 방향 (${before.dx},${before.dy}) → (${state.x},${state.y}), 방향 (${state.dx},${state.dy})`);
+
+          if (!inCoordBounds(state.x, state.y)) {
+            coordPath.push({ x: state.x, y: state.y });
+            coordHitStatus = "blocked";
+            logs.push(`대칭 이동 후 좌표평면 밖으로 나갔습니다.`);
+            break;
+          }
+
+          coordPath.push({ x: state.x, y: state.y });
+
+          if (stage.goal.x === state.x && stage.goal.y === state.y) {
+            coordHitStatus = "success";
+            logs.push(`대칭 이동 직후 목표점 (${state.x}, ${state.y})에 도달했습니다!`);
+            break;
+          }
+        }
+
+        const visitKey = `${state.x},${state.y},${state.dx},${state.dy}`;
+        if (visited.has(visitKey)) {
+          coordHitStatus = "blocked";
+          logs.push("같은 상태가 반복되어 무한 루프로 판단했습니다.");
+          break;
+        }
+        visited.add(visitKey);
+      }
+
+      if (coordHitStatus === "hit") {
+        coordHitStatus = "blocked";
+        logs.push("이동 횟수 제한을 넘었습니다.");
+      }
+
+      renderCoordBoard();
+
+      if (coordHitStatus === "success") {
+        coordResult.innerHTML = `🎯 성공!<br>${logs.slice(-2).join("<br>")}`;
+      } else {
+        coordResult.innerHTML = `아직 실패입니다.<br>${logs.slice(-3).join("<br>") || "오브젝트 배치를 바꿔보세요."}<br><br>힌트: ${stage.hint}`;
+      }
+    }
+
+    function transformLaserState(state, type) {
+      let { x, y, dx, dy } = state;
+
+      if (type === "slash") {
+        return { x, y, dx: -dy, dy: -dx };
+      }
+      if (type === "backslash") {
+        return { x, y, dx: dy, dy: dx };
+      }
+      if (type === "xAxis") {
+        return { x, y: -y, dx, dy: -dy };
+      }
+      if (type === "yAxis") {
+        return { x: -x, y, dx: -dx, dy };
+      }
+      if (type === "origin") {
+        return { x: -x, y: -y, dx: -dx, dy: -dy };
+      }
+      if (type === "vLine") {
+        const a = 2;
+        return { x: 2 * a - x, y, dx: -dx, dy };
+      }
+      if (type === "hLine") {
+        const b = -2;
+        return { x, y: 2 * b - y, dx, dy: -dy };
+      }
+      return state;
+    }
+
+    function inCoordBounds(x, y) {
+      return x >= COORD_MIN && x <= COORD_MAX && y >= COORD_MIN && y <= COORD_MAX;
+    }
+
+    function clearCoordPlaced() {
+      coordPlaced.clear();
+      coordPath = [];
+      coordHitStatus = "ready";
+      coordResult.textContent = "사용자가 배치한 오브젝트를 모두 지웠습니다.";
+      coordMessage.textContent = `현재 도구: ${toolNames[coordTool]}. 다시 배치해보세요.`;
+      renderCoordBoard();
+    }
+
+    function nextCoordStage() {
+      coordStageIndex = (coordStageIndex + 1) % coordStages.length;
+      coordPlaced.clear();
+      coordPath = [];
+      coordHitStatus = "ready";
+      coordResult.textContent = `스테이지 ${coordStageIndex + 1}입니다. ${getCurrentStage().hint}`;
+      renderCoordBoard();
+    }
+
+    coordToolButtons.forEach(btn => btn.addEventListener("click", () => setCoordTool(btn.dataset.tool)));
+    coordRunBtn.addEventListener("click", runCoordLaser);
+    coordClearBtn.addEventListener("click", clearCoordPlaced);
+    coordNextBtn.addEventListener("click", nextCoordStage);
+
+    setCoordTool("slash");
+    renderCoordBoard();
+
   </script>
 </body>
 </html>
